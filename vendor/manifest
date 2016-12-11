@@ -1,0 +1,49 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/ceralena/envconf",
+			"repository": "https://github.com/ceralena/envconf",
+			"revision": "efcce55d4e97f1f48b473a27d12833d961ecbfb3",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/ceralena/go-restroute",
+			"repository": "https://github.com/ceralena/go-restroute",
+			"revision": "0ed834f9c4f6100a42096cc9e5bac437230aafc9",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/davecgh/go-spew/spew",
+			"repository": "https://github.com/davecgh/go-spew",
+			"revision": "346938d642f2ec3594ed81d874461961cd0faa76",
+			"branch": "master",
+			"path": "/spew"
+		},
+		{
+			"importpath": "github.com/nightlyone/lockfile",
+			"repository": "https://github.com/nightlyone/lockfile",
+			"revision": "1d49c987357a327b5b03aa84cbddd582c328615d",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/pmezard/go-difflib/difflib",
+			"repository": "https://github.com/pmezard/go-difflib",
+			"revision": "792786c7400a136282c1664665ae0a8db921c6c2",
+			"branch": "master",
+			"path": "/difflib"
+		},
+		{
+			"importpath": "github.com/stretchr/objx",
+			"repository": "https://github.com/stretchr/objx",
+			"revision": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/stretchr/testify",
+			"repository": "https://github.com/stretchr/testify",
+			"revision": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e",
+			"branch": "master"
+		}
+	]
+}
