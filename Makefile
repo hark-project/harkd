@@ -1,11 +1,19 @@
 GOLINT = golint
+GB = gb
+GOFMT = gofmt
+
+SRCDIR = src
+
+TESTFLAGS = -race
+
+all: lint test build
 
 lint:
-	gofmt -w src/
-	$(GOLINT) -set_exit_status src/...
+	$(GOFMT) -w $(SRCDIR)
+	$(GOLINT) -set_exit_status $(SRCDIR)/...
 
 build:
-	gb build ...
+	$(GB) build
 
 test:
-	gb test -race
+	$(GB) test $(TESTFLAGS)

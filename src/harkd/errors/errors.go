@@ -78,27 +78,28 @@ func ErrMachineNotFound(machineID string) error {
 	return harkNotFoundError{404001, fmt.Sprintf("Machine not found: %q", machineID)}
 }
 
-// ErrEntityConflictError creates an error for 409 responses
+// ErrEntityConflict creates an error for 409 responses
 func ErrEntityConflict(msg string) error {
 	return harkConflictError{404002, msg}
 }
 
-// ErrSerializationError creates an error for 500 responses
+// ErrSerialization creates an error for 500 responses
 func ErrSerialization(msg string, err error) error {
 	fullMsg := fmt.Sprintf("Failed %s: %q", msg, err)
 	return harkInternalServerError{500001, fullMsg}
 }
 
-// ErrStatePersistError creates an error for 500 responses
+// ErrStatePersist creates an error for 500 responses
 func ErrStatePersist(err error) error {
 	return harkInternalServerError{500002, "failed to persist state: " + err.Error()}
 }
 
-// ErrStateLockError creates an error for 500 responses
+// ErrStateLock creates an error for 500 responses
 func ErrStateLock(err error) error {
 	return harkInternalServerError{500003, "failed to lock state for writing: " + err.Error()}
 }
 
+// ErrUserLookup creates an error for 500 responses
 func ErrUserLookup(err error) error {
 	return harkInternalServerError{500004, fmt.Sprintf("failed to look up user: %q", err.Error())}
 }
