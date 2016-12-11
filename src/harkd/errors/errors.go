@@ -12,16 +12,6 @@ type Coder interface {
 	Code() int
 }
 
-// ErrUserLookup is an error used when hark fails to look up the local
-// user in order to provide a hark context.
-type ErrUserLookup struct {
-	Err error
-}
-
-func (e ErrUserLookup) Error() string {
-	return fmt.Sprintf("Error looking up current user: %s", e.Err)
-}
-
 type harkBadRequestError struct {
 	code int
 	msg  string
@@ -89,22 +79,26 @@ func ErrMachineNotFound(machineID string) error {
 }
 
 // ErrEntityConflictError creates an error for 409 responses
-func ErrEntityConflictError(msg string) error {
+func ErrEntityConflict(msg string) error {
 	return harkConflictError{404002, msg}
 }
 
 // ErrSerializationError creates an error for 500 responses
-func ErrSerializationError(msg string, err error) error {
+func ErrSerialization(msg string, err error) error {
 	fullMsg := fmt.Sprintf("Failed %s: %q", msg, err)
 	return harkInternalServerError{500001, fullMsg}
 }
 
 // ErrStatePersistError creates an error for 500 responses
-func ErrStatePersistError(err error) error {
+func ErrStatePersist(err error) error {
 	return harkInternalServerError{500002, "failed to persist state: " + err.Error()}
 }
 
 // ErrStateLockError creates an error for 500 responses
-func ErrStateLockError(err error) error {
+func ErrStateLock(err error) error {
 	return harkInternalServerError{500003, "failed to lock state for writing: " + err.Error()}
+}
+
+func ErrUserLookup(err error) error {
+	return harkInternalServerError{500004, fmt.Sprintf("failed to look up user: %q", err.Error())}
 }

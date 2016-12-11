@@ -10,7 +10,7 @@ import (
 func GetUserHomeDir() (string, error) {
 	currentUser, err := user.Current()
 	if err != nil {
-		return "", errors.ErrUserLookup{err}
+		return "", errors.ErrUserLookup(err)
 	}
 
 	return currentUser.HomeDir, nil

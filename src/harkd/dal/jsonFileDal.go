@@ -77,11 +77,11 @@ func loadJSONFileState(filename string) (jsonFileState, error) {
 func saveJSONFileState(jfs jsonFileState, filename string) error {
 	b, err := json.Marshal(jfs)
 	if err != nil {
-		return errors.ErrSerializationError("serializing state", err)
+		return errors.ErrSerialization("serializing state", err)
 	}
 
 	if err := ioutil.WriteFile(filename, b, 0644); err != nil {
-		return errors.ErrStatePersistError(err)
+		return errors.ErrStatePersist(err)
 	}
 
 	return nil
@@ -143,7 +143,7 @@ func (jfd jsonFileDal) SaveMachine(machine core.Machine) error {
 		// First, make sure this ID does not exist already
 		for _, m := range s.Machines {
 			if m.ID == machine.ID {
-				return errors.ErrEntityConflictError(fmt.Sprintf("already have machine with id %q", m.ID))
+				return errors.ErrEntityConflict(fmt.Sprintf("already have machine with id %q", m.ID))
 			}
 		}
 

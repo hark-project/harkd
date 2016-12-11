@@ -50,7 +50,7 @@ func (l *lock) Lock() error {
 			// We now have the file lock
 			break
 		} else if i >= lockMaxRetries {
-			return errors.ErrStateLockError(err)
+			return errors.ErrStateLock(err)
 		}
 
 		time.Sleep(lockDelayInterval)
