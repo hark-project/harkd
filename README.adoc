@@ -1,0 +1,21 @@
+# harkd
+
+image:https://travis-ci.org/hark-project/harkd.svg?branch=master["Build Status", link="https://travis-ci.org/hark-project/harkd"]
+
+This is the core engine for the https://hark-project.net[hark project].
+
+It's a HTTP server written in Go providing a RESTful API which Hark tools -
+e.g. the web interface or the CLI - can communicate with.
+
+State is stored in a flat JSON file in `~/.hark/hark.json`.
+
+## Development
+
+Dependencies:
+
+* go
+* https://getgb.io[gb]
+
+## License
+
+GPLv3. See `LICENSE.txt` for more.
