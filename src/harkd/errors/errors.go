@@ -103,3 +103,8 @@ func ErrStateLock(err error) error {
 func ErrUserLookup(err error) error {
 	return harkInternalServerError{500004, fmt.Sprintf("failed to look up user: %q", err.Error())}
 }
+
+// ErrStateInitialization creates an error for 500 responses
+func ErrStateInitialization(err error) error {
+	return harkInternalServerError{500005, "failed to persist state: " + err.Error()}
+}
