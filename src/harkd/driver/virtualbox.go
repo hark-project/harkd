@@ -1,36 +1,35 @@
 package driver
 
 import (
-	"os/exec"
 	"strings"
+
+	"harkd/util/command"
 )
 
-func virtualboxAvailable() bool {
+type Virtualbox struct {
+	command.Runner
+}
+
+func (v Virtualbox) available() bool {
 	// virtualbox works on all supported platforms
 	return true
 }
 
-func virtualboxInstalled() bool {
+func (v Virtualbox) installed() bool {
 	// Just check for the command in the path
-	_, err := exec.LookPath("VBoxManage")
-	return err == nil
+	return v.HaveOnPath("VBoxManage")
 }
 
-func virtualboxHealthy() bool {
+func (v Virtualbox) healthy() bool {
 	// Run the command with --version; ignore the output
-	c := exec.Command("VBoxManage", "--version")
-	if err := c.Start(); err != nil {
-		return false
-	}
-	err := c.Wait()
-	return err == nil
+	res := v.RunSimple("VBoxManage", "--version")
+	return res.Error == nil
 }
 
-func virtualboxVersion() string {
-	c := exec.Command("VBoxManage", "--version")
-	b, err := c.CombinedOutput()
-	if err != nil {
+func (v Virtualbox) version() string {
+	res := v.RunSimple("VBoxManage", "--version")
+	if res.Error != nil {
 		return ""
 	}
-	return strings.TrimSpace(string(b))
+	return strings.TrimSpace(string(res.Output))
 }

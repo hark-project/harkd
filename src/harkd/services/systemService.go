@@ -2,6 +2,7 @@ package services
 
 import (
 	"harkd/driver"
+	"harkd/util/command"
 )
 
 // SystemService is a controller for getting system-level diagnostics
@@ -18,15 +19,17 @@ type Status struct {
 
 // NewSystemService constructs a SystemService.
 func NewSystemService() SystemService {
-	return systemService{}
+	return systemService{command.NewRunner()}
 }
 
-type systemService struct{}
+type systemService struct {
+	command.Runner
+}
 
 func (sc systemService) GetStatus() Status {
 	return Status{true}
 }
 
 func (sc systemService) GetDriverInfo() []driver.Info {
-	return driver.GetDriverInfo()
+	return driver.GetDriverInfo(sc.Runner)
 }

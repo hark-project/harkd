@@ -1,5 +1,9 @@
 package driver
 
+import (
+	"harkd/util/command"
+)
+
 // Info is information about a particular driver.
 type Info struct {
 	DriverName          string `json:"driverName"`
@@ -10,8 +14,9 @@ type Info struct {
 }
 
 // GetDriverInfo returns information on every Driver supported by hark.
-func GetDriverInfo() []Info {
+func GetDriverInfo(runner command.Runner) []Info {
+	virtualbox := Virtualbox{runner}
 	return []Info{
-		{"virtualbox", virtualboxAvailable(), virtualboxInstalled(), virtualboxHealthy(), virtualboxVersion()},
+		{"virtualbox", virtualbox.available(), virtualbox.installed(), virtualbox.healthy(), virtualbox.version()},
 	}
 }
