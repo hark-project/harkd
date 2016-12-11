@@ -19,6 +19,8 @@ func (ehs errorHandlerService) GetHTTPStatusCode(err error) int {
 		return 400
 	case harkNotFoundError:
 		return 404
+	case harkConflictError:
+		return 409
 	case harkInternalServerError:
 		return 500
 	default:
