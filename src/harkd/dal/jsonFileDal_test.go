@@ -41,12 +41,15 @@ func TestJSONFileDalGetMachines(t *testing.T) {
 	for _, c := range getMachinesTests {
 		c := c
 		t.Run(c.name, func(t *testing.T) {
+			// Prepare
 			dal, fs := getMockDal(t)
 			buf := bytes.NewBuffer([]byte(c.stateJson))
 			fs.MockOpen.WillReturn = fixtures.NewNopCloser(buf)
 
+			// Execute
 			machines, err := dal.GetMachines()
 
+			// Assert
 			if c.valid {
 				require.NoError(t, err)
 			} else {
@@ -77,12 +80,15 @@ func TestJSONFileDalGetMachinebyID(t *testing.T) {
 	for _, c := range getMachineByIDTests {
 		c := c
 		t.Run(c.name, func(t *testing.T) {
+			// Prepare
 			dal, fs := getMockDal(t)
 			buf := bytes.NewBuffer([]byte(c.stateJson))
 			fs.MockOpen.WillReturn = fixtures.NewNopCloser(buf)
 
+			// Execute
 			machine, err := dal.GetMachineByID(c.machineId)
 
+			// Assert
 			if c.valid {
 				require.NoError(t, err)
 			} else {
@@ -111,12 +117,15 @@ func TestJSONFileDalSaveMachine(t *testing.T) {
 	for _, c := range saveMachineTests {
 		c := c
 		t.Run(c.name, func(t *testing.T) {
+			// Prepare
 			dal, fs := getMockDal(t)
 			buf := bytes.NewBuffer([]byte(c.stateBefore))
 			fs.MockOpen.WillReturn = fixtures.NewNopCloser(buf)
 
+			// Execute
 			err := dal.SaveMachine(c.machine)
 
+			// Assert
 			if c.valid {
 				require.NoError(t, err)
 			} else {
