@@ -77,7 +77,7 @@ func loadJSONFileState(fileSys fs.Filesystem, filename string) (jsonFileState, e
 }
 
 func saveJSONFileState(jfs jsonFileState, fileSys fs.Filesystem, filename string) error {
-	b, err := json.Marshal(jfs)
+	b, err := json.MarshalIndent(jfs, "", "  ")
 	if err != nil {
 		return errors.ErrSerialization("serializing state", err)
 	}
