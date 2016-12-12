@@ -6,27 +6,27 @@ import (
 	"harkd/util/command"
 )
 
-type Virtualbox struct {
+type virtualbox struct {
 	command.Runner
 }
 
-func (v Virtualbox) available() bool {
+func (v virtualbox) available() bool {
 	// virtualbox works on all supported platforms
 	return true
 }
 
-func (v Virtualbox) installed() bool {
+func (v virtualbox) installed() bool {
 	// Just check for the command in the path
 	return v.HaveOnPath("VBoxManage")
 }
 
-func (v Virtualbox) healthy() bool {
+func (v virtualbox) healthy() bool {
 	// Run the command with --version; ignore the output
 	res := v.RunSimple("VBoxManage", "--version")
 	return res.Error == nil
 }
 
-func (v Virtualbox) version() string {
+func (v virtualbox) version() string {
 	res := v.RunSimple("VBoxManage", "--version")
 	if res.Error != nil {
 		return ""

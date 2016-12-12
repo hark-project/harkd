@@ -15,8 +15,8 @@ type Info struct {
 
 // GetDriverInfo returns information on every Driver supported by hark.
 func GetDriverInfo(runner command.Runner) []Info {
-	virtualbox := Virtualbox{runner}
+	vb := virtualbox{runner}
 	return []Info{
-		{"virtualbox", virtualbox.available(), virtualbox.installed(), virtualbox.healthy(), virtualbox.version()},
+		{"virtualbox", vb.available(), vb.installed(), vb.healthy(), vb.version()},
 	}
 }

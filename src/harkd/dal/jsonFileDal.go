@@ -3,12 +3,12 @@ package dal
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"harkd/core"
 	"harkd/errors"
 	"harkd/util"
+	"harkd/util/fs"
 )
 
 const jsonFileDalFileMode = 0644
@@ -25,12 +25,14 @@ func NewJSONFileDal(filename string) (Dal, error) {
 
 	return jsonFileDal{
 		filename,
+		fs.NewFilesystem(),
 		lock,
 	}, nil
 }
 
 type jsonFileDal struct {
-	filename string
+	filename   string
+	fileSystem fs.Filesystem
 	util.Lock
 }
 
@@ -38,8 +40,8 @@ type jsonFileState struct {
 	Machines []core.Machine `json:"machines"`
 }
 
-func initializeJSONFileState(filename string) error {
-	_, err := os.Stat(filename)
+func initializeJSONFileState(fileSys fs.Filesystem, filename string) error {
+	_, err := fileSys.Stat(filename)
 	if err == nil {
 		return nil
 	} else if err != nil && !os.IsNotExist(err) {
@@ -51,19 +53,19 @@ func initializeJSONFileState(filename string) error {
 	var jfs jsonFileState
 
 	// Persist it
-	return saveJSONFileState(jfs, filename)
+	return saveJSONFileState(jfs, fileSys, filename)
 }
 
-func loadJSONFileState(filename string) (jsonFileState, error) {
+func loadJSONFileState(fileSys fs.Filesystem, filename string) (jsonFileState, error) {
 	var jfs jsonFileState
 
 	// Make sure the state has been initialized
-	err := initializeJSONFileState(filename)
+	err := initializeJSONFileState(fileSys, filename)
 	if err != nil {
 		return jfs, err
 	}
 
-	f, err := os.Open(filename)
+	f, err := fileSys.Open(filename)
 	if err != nil {
 		// TODO(cera) - wrap this error
 		return jfs, err
@@ -74,13 +76,13 @@ func loadJSONFileState(filename string) (jsonFileState, error) {
 	return jfs, dec.Decode(&jfs)
 }
 
-func saveJSONFileState(jfs jsonFileState, filename string) error {
+func saveJSONFileState(jfs jsonFileState, fileSys fs.Filesystem, filename string) error {
 	b, err := json.Marshal(jfs)
 	if err != nil {
 		return errors.ErrSerialization("serializing state", err)
 	}
 
-	if err := ioutil.WriteFile(filename, b, 0644); err != nil {
+	if err := fileSys.WriteFile(filename, b, 0644); err != nil {
 		return errors.ErrStatePersist(err)
 	}
 
@@ -88,7 +90,7 @@ func saveJSONFileState(jfs jsonFileState, filename string) error {
 }
 
 func (jfd jsonFileDal) loadState() (jsonFileState, error) {
-	return loadJSONFileState(jfd.filename)
+	return loadJSONFileState(jfd.fileSystem, jfd.filename)
 }
 
 func (jfd jsonFileDal) withState(fn func(s jsonFileState) error) error {
@@ -151,6 +153,6 @@ func (jfd jsonFileDal) SaveMachine(machine core.Machine) error {
 		s.Machines = append(s.Machines, machine)
 
 		// Save the state back to the file
-		return saveJSONFileState(s, jfd.filename)
+		return saveJSONFileState(s, jfd.fileSystem, jfd.filename)
 	})
 }

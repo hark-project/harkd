@@ -19,6 +19,7 @@ type Runner interface {
 	RunSimple(string, ...string) SimpleResult
 }
 
+// NewRunner creates a new Runner that runs real commands with fork and exec.
 func NewRunner() Runner {
 	return runner{}
 }
