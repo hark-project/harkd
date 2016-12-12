@@ -23,7 +23,7 @@ func NewJSONFileDal(filename string) (Dal, error) {
 		return nil, err
 	}
 
-	return jsonFileDal{
+	return &jsonFileDal{
 		filename,
 		fs.NewFilesystem(),
 		lock,
@@ -77,7 +77,7 @@ func loadJSONFileState(fileSys fs.Filesystem, filename string) (jsonFileState, e
 }
 
 func saveJSONFileState(jfs jsonFileState, fileSys fs.Filesystem, filename string) error {
-	b, err := json.MarshalIndent(jfs, "", "  ")
+	b, err := json.Marshal(jfs)
 	if err != nil {
 		return errors.ErrSerialization("serializing state", err)
 	}
@@ -141,7 +141,7 @@ func (jfd jsonFileDal) GetMachineByID(machineID string) (core.Machine, error) {
 
 func (jfd jsonFileDal) SaveMachine(machine core.Machine) error {
 	// get a file lock so that we do not race with other processes or goroutines
-	return jfd.withState(func(s jsonFileState) error {
+	return jfd.withStateLock(func(s jsonFileState) error {
 		// First, make sure this ID does not exist already
 		for _, m := range s.Machines {
 			if m.ID == machine.ID {
